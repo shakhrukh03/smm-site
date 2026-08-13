@@ -214,7 +214,28 @@ app.post('/api/telegram-webhook', (req, res) => {
 
     res.sendStatus(200);
 });
+const nodemailer = require('nodemailer');
 
+// Настройка транспорта для отправки писем
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // или 'yandex', 'mail.ru'
+  auth: {
+    user: 'your_email@gmail.com',     // Ваша почта
+    pass: 'your_app_password'         // Пароль приложения (генерируется в настройках аккаунта)
+  }
+});
+db.run(`
+  CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE,
+      email TEXT UNIQUE,
+      password TEXT,
+      balance REAL DEFAULT 0,
+      is_verified INTEGER DEFAULT 0,    -- 0 = не подтверждён, 1 = подтверждён
+      verification_code TEXT,           -- Код подтверждения (например, 6 цифр)
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )
+`);
 /* ==========================================================
    ОФОРМЛЕНИЕ ЗАКАЗА
    ========================================================== */
