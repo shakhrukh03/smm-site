@@ -586,3 +586,82 @@ body {
   display: none; z-index: 2000;
   font-size: 14px;
 }
+/* ==========================================================
+   МОБИЛЬНАЯ ВЕРСИЯ (Media Queries)
+   ========================================================== */
+@media (max-width: 768px) {
+  
+  /* Контейнеры и сетки */
+  .container {
+    padding: 0 15px;
+  }
+
+  .hero-grid,
+  .order-grid,
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  /* Шапка сайта */
+  .nav-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Меню категорий услуг (горизонтальная прокрутка) */
+  .services-layout {
+    flex-direction: column;
+  }
+
+  .categories-sidebar {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    gap: 8px;
+  }
+
+  .cat-btn {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  /* Адаптив таблиц и списков */
+  .table-header, 
+  .service-row-item {
+    grid-template-columns: 1fr auto !important;
+    gap: 8px;
+  }
+
+  /* Скрываем второстепенную информацию на маленьких экранах */
+  .table-header span:nth-child(2),
+  .table-header span:nth-child(3),
+  .service-row-item .stars,
+  .service-row-item small {
+    display: none;
+  }
+
+  /* Личный кабинет */
+  .dashboard-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Модальное окно */
+  .modal-window {
+    width: 90% !important;
+    padding: 20px;
+  }
+}
