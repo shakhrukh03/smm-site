@@ -1,3 +1,4 @@
+cat << 'EOF' > public/script.js
 /* ==========================================================
    1. ДАННЫЕ УСЛУГ И СОСТОЯНИЕ
    ========================================================== */
@@ -380,3 +381,4 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSummary();
   updateAuth();
 });
+EOF
