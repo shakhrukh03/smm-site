@@ -1,21 +1,50 @@
 /* ==========================================================
    1. ДАННЫЕ УСЛУГ И СОСТОЯНИЕ
    ========================================================== */
+/* ==========================================================
+   1. ДАННЫЕ УСЛУГ И СОСТОЯНИЕ
+   ========================================================== */
 const servicesData = {
   followers: [
-    { id: 1, name: "Подписчики — Стандарт 🇰🇿", isHit: true, quality: "★★★★★", speed: "До 24 часов", price: 1490 },
-    { id: 2, name: "Подписчики — Премиум 🇰🇿", isHit: false, quality: "★★★★★", speed: "До 12 часов", price: 2290 },
-    { id: 3, name: "Подписчики — VIP 🇰🇿", isHit: false, quality: "★★★★★", speed: "До 6 часов", price: 3490 },
-    { id: 4, name: "Подписчики — Микс 🌍", isHit: false, quality: "★★★☆☆", speed: "До 24 часов", price: 890 }
+    { id: 1, name: "Подписчики — Стандарт", isHit: true, quality: "★★★★", speed: "10-30 минут", price: 440 },
+    { id: 2, name: "Подписчики — Эконом", isHit: false, quality: "★★★", speed: "До 12 часов", price: 320 },
+    { id: 3, name: "Подписчики — Премиальные", isHit: false, quality: "★★★★★", speed: "20-40 минут", price: 850 },
+  
   ],
   likes: [
-    { id: 5, name: "Лайки — Стандарт", isHit: true, quality: "★★★★★", speed: "До 1 часа", price: 690 },
-    { id: 6, name: "Лайки — Премиум", isHit: false, quality: "★★★★★", speed: "До 30 минут", price: 990 }
+    { id: 5, name: "Лайки — Стандарт", isHit: true, quality: "★★★★", speed: "5-15 минут", price: 60 },
+    { id: 6, name: "Лайки — Премиум", isHit: false, quality: "★★★★★", speed: "5-15 минут", price: 100 },
+    { id: 7, name: "Лайки с охватом", isHit: false, quality: "★★★★★", speed: "10-20 минут", price: 130 }
   ],
   views: [
-    { id: 7, name: "Просмотры — Быстрые", isHit: true, quality: "★★★★★", speed: "До 20 минут", price: 390 }
+    { id: 8, name: "Просмотры Reels / Видео — Быстрые", isHit: true, quality: "★★★★★", speed: "До 20 минут", price: 7 },
+    { id: 9, name: "Просмотры Reels — Эконом", isHit: false, quality: "★★★☆☆", speed: "До 2 часов", price: 5 }
+  ],
+  stories: [
+    { id: 10, name: "Просмотры Историй (Stories)", isHit: true, quality: "★★★★★", speed: "Мгновенно", price: 150 },
+    { id: 11, name: "Просмотры Историй + Голосование", isHit: false, quality: "★★★★★", speed: "До 1 часа", price: 400 }
+  ],
+  comments: [
+    { id: 12, name: "Комментарии — Свой текст", isHit: true, quality: "★★★★★", speed: "До 1 часа", price: 11000 },
+    
+  ],
+  saves: [
+    { id: 14, name: "Сохранения публикаций", isHit: true, quality: "★★★★☆", speed: "Мгновенно", price: 190 },
+    { id: 15, name: "Сохранения + Охват", isHit: false, quality: "★★★★★", speed: "До 30 минут", price: 350 }
+  ],
+  reposts: [
+    { id: 16, name: "Репосты публикации", isHit: true, quality: "★★★★☆", speed: "Мгновенно", price: 250 }
+  ],
+  direct: [
+    { id: 17, name: "Пересылки в Direct", isHit: true, quality: "★★★★★", speed: "До 1 часа", price: 350 }
   ]
 };
+
+let currentCategory = "followers";
+let selectedService = servicesData.followers[0];
+let quantity = 1000;
+
+const formatMoney = (amount) => new Intl.NumberFormat("ru-RU").format(amount) + " ₸";
 
 let currentCategory = "followers";
 let selectedService = servicesData.followers[0];
