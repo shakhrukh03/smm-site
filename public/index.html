@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAKRUTKA.ASIA — Продвижение Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Навигация -->
+  <header class="header">
+    <div class="container nav-container">
+      <a href="#" class="logo">NAKRUTKA<span>.ASIA</span></a>
+      <nav class="nav-links">
+        <a href="#services">Услуги</a>
+        <a href="#how">Как это работает</a>
+        <a href="#prices">Цены</a>
+        <a href="#faq">FAQ</a>
+        <a href="#support">Поддержка</a>
+      </nav>
+      <div class="auth-buttons" id="authArea">
+        <button class="btn-login" onclick="openModal('login')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Войти
+        </button>
+        <button class="btn-register" onclick="openModal('register')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Регистрация
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Секция -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <h1>Продвигай Instagram<br><span class="accent-red">на своих условиях</span></h1>
+        <p class="hero-description">
+          Подписчики, лайки, просмотры и другие услуги для Instagram.<br>
+          Быстрый заказ, удобная оплата и автоматическая обработка.
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <div>
+              <strong>Безопасно</strong>
+              <small>Без риска для аккаунта</small>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div>
+              <strong>Быстро</strong>
+              <small>Старт в течение нескольких минут</small>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎖️</div>
+            <div>
+              <strong>Качественно</strong>
+              <small>Реальные люди и активность</small>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎧</div>
+            <div>
+              <strong>Поддержка 24/7</strong>
+              <small>Мы всегда рядом</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="scrollToServices()">Начать продвижение →</button>
+          <button class="btn-secondary" onclick="scrollToServices()">Смотреть услуги ↓</button>
+        </div>
+      </div>
+
+      <!-- Иллюстрация телефона -->
+      <div class="hero-mockup">
+        <div class="phone-wrapper">
+          <div class="phone-screen">
+            <div class="phone-header">your.profile <span>•••</span></div>
+            <div class="phone-avatar-row">
+              <div class="phone-avatar"></div>
+              <div class="phone-stats">
+                <div><b>128</b><small>Публикации</small></div>
+                <div><b>12.3K</b><small>Подписчики</small></div>
+                <div><b>256</b><small>Подписки</small></div>
+              </div>
+            </div>
+            <div class="phone-bio">
+              <b>Your Profile</b>
+              <span>Digital Creator</span>
+              <p>Make it simple, but significant.</p>
+            </div>
+            <div class="phone-edit-btn">Редактировать профиль</div>
+            <div class="phone-highlights">
+              <div><span>❤️</span><small>Life</small></div>
+              <div><span>🎬</span><small>Work</small></div>
+              <div><span>✈️</span><small>Travel</small></div>
+              <div><span>⚽</span><small>Sport</small></div>
+            </div>
+            <div class="phone-grid">
+              <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
+              <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
+            </div>
+          </div>
+          <!-- Всплывающие плашки -->
+          <div class="badge badge-likes">❤️ 25.6K</div>
+          <div class="badge badge-followers">👤 12.3K</div>
+          <div class="badge badge-views">👁️ 98.7K</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция Услуг и Оформления заказа -->
+  <section id="services" class="container order-section">
+    <div class="order-grid">
+      
+      <!-- Таблица Услуг -->
+      <div class="services-box">
+        <h3>Выберите услугу</h3>
+        <div class="services-layout">
+          <!-- Меню категорий -->
+          <div class="categories-sidebar">
+            <button class="cat-btn active" data-cat="followers"><span>👥</span> Подписчики</button>
+            <button class="cat-btn" data-cat="likes"><span>❤️</span> Лайки</button>
+            <button class="cat-btn" data-cat="views"><span>👁️</span> Просмотры</button>
+            <button class="cat-btn" data-cat="stories"><span>⭕</span> Истории (просмотры)</button>
+            <button class="cat-btn" data-cat="comments"><span>💬</span> Комментарии</button>
+            <button class="cat-btn" data-cat="saves"><span>🔖</span> Сохранения</button>
+            <button class="cat-btn" data-cat="reposts"><span>🔄</span> Репосты</button>
+            <button class="cat-btn" data-cat="direct"><span>✈️</span> Пересылки в Direct</button>
+          </div>
+
+          <!-- Таблица списка услуг -->
+          <div class="services-list-container">
+            <div class="table-header">
+              <span>Услуга</span>
+              <span>Качество</span>
+              <span>Скорость</span>
+              <span>Цена за 1000</span>
+              <span></span>
+            </div>
+            <div id="serviceRows" class="service-rows">
+              <!-- Заполняется JS -->
+            </div>
+            <button class="btn-more">Показать больше услуг ↓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Калькулятор и Оформление -->
+      <div class="checkout-card">
+        <h3>Оформление заказа</h3>
+        
+        <label class="form-label">Ссылка на профиль</label>
+        <div class="input-with-icon">
+          <input type="text" id="linkInput" placeholder="https://instagram.com/username">
+          <span class="input-icon">🔗</span>
+        </div>
+
+        <label class="form-label">Количество</label>
+        <div class="qty-picker">
+          <button id="qtyMinus" type="button">−</button>
+          <input type="number" id="qtyInput" value="1000" step="100" min="100">
+          <button id="qtyPlus" type="button">+</button>
+        </div>
+
+        <div class="summary-box">
+          <div class="summary-row font-bold">
+            <span>Вы выбрали:</span>
+          </div>
+          <div class="summary-row text-muted">
+            <span id="selectedServiceName">Подписчики — Стандарт</span>
+            <span id="selectedQty">1000</span>
+          </div>
+          <div class="summary-row text-muted">
+            <span>Стоимость за 1000:</span>
+            <span id="selectedUnitPrice">1 490 ₸</span>
+          </div>
+          <hr class="divider">
+          <div class="summary-row total-row">
+            <span>Итого:</span>
+            <strong id="totalPrice" class="total-price">1 490 ₸</strong>
+          </div>
+        </div>
+
+        <button class="btn-checkout" onclick="placeOrder()">Заказать 🛒</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Как это работает -->
+  <section id="how" class="container how-section">
+    <h2>Как это работает?</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon">👤➕</div>
+        <span class="step-num">01</span>
+        <h4>Зарегистрируйтесь</h4>
+        <p>Создайте аккаунт за пару секунд</p>
+      </div>
+      <div class="step-arrow">➔</div>
+      <div class="step-card">
+        <div class="step-icon">💳</div>
+        <span class="step-num">02</span>
+        <h4>Пополните баланс</h4>
+        <p>Удобные способы пополнения</p>
+      </div>
+      <div class="step-arrow">➔</div>
+      <div class="step-card">
+        <div class="step-icon">🛒</div>
+        <span class="step-num">03</span>
+        <h4>Оформите заказ</h4>
+        <p>Выберите услугу и укажите ссылку</p>
+      </div>
+      <div class="step-arrow">➔</div>
+      <div class="step-card">
+        <div class="step-icon">📊</div>
+        <span class="step-num">04</span>
+        <h4>Получите результат</h4>
+        <p>Мы быстро выполним ваш заказ</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Личный кабинет (скрыт по умолчанию) -->
+  <section id="dashboard" class="container dashboard-section" style="display:none;">
+    <div class="dashboard-header">
+      <div>
+        <h2>Личный кабинет</h2>
+        <p>Управляйте балансом и заказами</p>
+      </div>
+      <button class="btn-secondary" onclick="hideDashboard()">← На сайт</button>
+    </div>
+
+    <div class="dashboard-cards">
+      <div class="dash-card">
+        <small>Ваш баланс</small>
+        <strong id="dashBalance">0 ₸</strong>
+      </div>
+      <div class="dash-card">
+        <small>Всего заказов</small>
+        <strong id="dashOrdersCount">0</strong>
+      </div>
+    </div>
+
+    <div class="dashboard-tabs">
+      <button onclick="openTab('orders')">📦 Мои заказы</button>
+      <button onclick="openTab('deposit')">💳 Пополнить баланс</button>
+    </div>
+
+    <div id="tab-orders" class="tab-content">
+      <div id="ordersTableArea"></div>
+    </div>
+
+    <div id="tab-deposit" class="tab-content" hidden>
+      <h3>Пополнение баланса</h3>
+      <p>Выберите сумму тестового пополнения:</p>
+      <div class="pay-buttons-grid">
+        <button class="btn-pay" onclick="addTestBalance(5000)">+ 5 000 ₸</button>
+        <button class="btn-pay" onclick="addTestBalance(10000)">+ 10 000 ₸</button>
+        <button class="btn-pay" onclick="addTestBalance(25000)">+ 25 000 ₸</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Модальное окно Авторизации -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal-window">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      
+      <div id="loginForm">
+        <h2>Войти в аккаунт</h2>
+        <input type="text" id="loginUser" placeholder="Логин или Email" class="modal-input">
+        <input type="password" id="loginPass" placeholder="Пароль" class="modal-input">
+        <button class="btn-primary full-width" onclick="login()">Войти</button>
+        <p class="modal-switch">Нет аккаунта? <a onclick="showForm('register')">Зарегистрироваться</a></p>
+      </div>
+
+      <div id="registerForm" hidden>
+        <h2>Регистрация</h2>
+        <input type="text" id="regUser" placeholder="Придумайте логин" class="modal-input">
+        <input type="email" id="regEmail" placeholder="Email" class="modal-input">
+        <input type="password" id="regPass" placeholder="Пароль" class="modal-input">
+        <button class="btn-primary full-width" onclick="register()">Создать аккаунт</button>
+        <p class="modal-switch">Уже есть аккаунт? <a onclick="showForm('login')">Войти</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
