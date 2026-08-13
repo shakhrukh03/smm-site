@@ -1,4 +1,3 @@
-
 /* ==========================================================
    1. ДАННЫЕ УСЛУГ И СОСТОЯНИЕ
    ========================================================== */
@@ -73,23 +72,35 @@ function showForm(formType) {
 }
 
 function showDashboard() {
-  document.getElementById('services').style.display = 'none';
-  document.getElementById('how').style.display = 'none';
+  const services = document.getElementById('services');
+  const how = document.getElementById('how');
   const dash = document.getElementById('dashboard');
-  if (dash) dash.style.display = 'block';
-  updateAuth();
+
+  if (services) services.style.display = 'none';
+  if (how) how.style.display = 'none';
+  
+  if (dash) {
+    dash.style.display = 'block';
+  } else {
+    openModal('topup');
+  }
 }
 
 function hideDashboard() {
-  document.getElementById('services').style.display = 'block';
-  document.getElementById('how').style.display = 'block';
+  const services = document.getElementById('services');
+  const how = document.getElementById('how');
   const dash = document.getElementById('dashboard');
+
+  if (services) services.style.display = 'block';
+  if (how) how.style.display = 'block';
   if (dash) dash.style.display = 'none';
 }
 
 function openTab(tabName) {
-  document.getElementById('tab-orders').hidden = tabName !== 'orders';
-  document.getElementById('tab-deposit').hidden = tabName !== 'deposit';
+  const tabOrders = document.getElementById('tab-orders');
+  const tabDeposit = document.getElementById('tab-deposit');
+  if (tabOrders) tabOrders.hidden = tabName !== 'orders';
+  if (tabDeposit) tabDeposit.hidden = tabName !== 'deposit';
 }
 
 /* ==========================================================
@@ -137,7 +148,6 @@ function logout() {
   location.reload();
 }
 
-// Пополнение баланса через Kaspi (Заявка в Telegram)
 async function submitTopup() {
   const token = localStorage.getItem('nak_token');
   if (!token) {
@@ -252,10 +262,19 @@ function renderServices(category) {
 }
 
 function selectService(id) {
-  const found = servicesData[currentCategory].find(s => s.id === id);
+  let found = null;
+  for (const cat in servicesData) {
+    const match = servicesData[cat].find(s => s.id === id);
+    if (match) {
+      found = match;
+      break;
+    }
+  }
+
   if (found) {
     selectedService = found;
     updateSummary();
+    showToast(`Выбрано: ${found.name}`);
   }
 }
 
