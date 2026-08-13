@@ -16,118 +16,7 @@ const servicesData = {
     { id: 7, name: "Просмотры — Быстрые", isHit: true, quality: "★★★★★", speed: "До 20 минут", price: 390 }
   ]
 };
-// Настройки Telegram
-const TELEGRAM_TOKEN = '8925332625:AAEpgBseHvnBTcB486_D7N8t0uEkBswiAVE';
-const ADMIN_CHAT_ID = '7825357527'; // Ваш ID из @userinfobot
-async function submitTopup() {
-    const amount = document.getElementById('topup-amount').value;
-    const username = localStorage.getItem('username'); // Или из вашей системы авторизации
 
-    if (!amount || amount <= 0) {
-        alert('Введите корректную сумму');
-        return;
-    }
-
-    const res = await fetch('/api/topup/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, amount })
-    });
-
-    const data = await res.json();
-    if (data.success) {
-        alert('Заявка отправлена! Баланс пополнится автоматически после проверки платежа.');
-    } else {
-        alert('Ошибка при создании заявки.');
-    }
-}
-// 1. Создаем таблицу для заявок на пополнение (если нет)
-db.run(`CREATE TABLE IF NOT EXISTS topups (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT,
-    amount REAL,
-    status TEXT DEFAULT 'pending',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-)`);
-
-// 2. Эндпоинт для создания заявки на пополнение
-app.post('/api/topup/create', (req, res) => {
-    const { username, amount } = req.body;
-
-    if (!username || !amount || amount <= 0) {
-        return res.status(400).json({ error: 'Неверные данные' });
-    }
-
-    db.run(
-        `INSERT INTO topups (username, amount) VALUES (?, ?)`,
-        [username, amount],
-        function (err) {
-            if (err) return res.status(500).json({ error: 'Ошибка БД' });
-
-            const topupId = this.lastID;
-
-            // Отправляем сообщение администратору в Telegram
-            const message = `💰 *Новая заявка на пополнение!*\n\n` +
-                `👤 *Пользователь:* ${username}\n` +
-                `💵 *Сумма:* ${amount} ₸\n` +
-                `🆔 *Заявка #:* ${topupId}\n\n` +
-                `Проверьте Kaspi и нажмите кнопку ниже:`;
-
-            const keyboard = {
-                inline_keyboard: [[
-                    { text: '✅ Подтвердить', callback_data: `approve_${topupId}` },
-                    { text: '❌ Отклонить', callback_data: `reject_${topupId}` }
-                ]]
-            };
-
-            axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-                chat_id: ADMIN_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown',
-                reply_markup: keyboard
-            }).catch(e => console.error('Ошибка Telegram:', e.message));
-
-            res.json({ success: true, topupId });
-        }
-    );
-});
-
-// 3. Вебхук/Обработка нажатий кнопок в Telegram
-app.post('/api/telegram-webhook', (req, res) => {
-    const update = req.body;
-    
-    if (update.callback_query) {
-        const query = update.callback_query;
-        const data = query.data;
-        const [action, topupId] = data.split('_');
-
-        db.get(`SELECT * FROM topups WHERE id = ?`, [topupId], (err, topup) => {
-            if (!topup || topup.status !== 'pending') {
-                return res.json({ status: 'ok' });
-            }
-
-            if (action === 'approve') {
-                // Пополняем баланс пользователю
-                db.run(`UPDATE users SET balance = balance + ? WHERE username = ?`, [topup.amount, topup.username]);
-                db.run(`UPDATE topups SET status = 'approved' WHERE id = ?`, [topupId]);
-
-                axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/answerCallbackQuery`, {
-                    callback_query_id: query.id,
-                    text: `✅ Заявка #${topupId} на ${topup.amount}₸ одобрена!`
-                });
-            } else if (action === 'reject') {
-                db.run(`UPDATE topups SET status = 'rejected' WHERE id = ?`, [topupId]);
-
-                axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/answerCallbackQuery`, {
-                    callback_query_id: query.id,
-                    text: `❌ Заявка #${topupId} отклонена.`
-                });
-            }
-        });
-    }
-
-    res.sendStatus(200);
-});
 let currentCategory = "followers";
 let selectedService = servicesData.followers[0];
 let quantity = 1000;
@@ -247,14 +136,30 @@ function logout() {
   location.reload();
 }
 
-// ФУНКЦИЯ ПОПОЛНЕНИЯ БАЛАНСА
-async function addTestBalance(amount) {
-  const data = await apiRequest('/api/user/add-balance', 'POST', { amount });
+// Пополнение баланса через Kaspi (Заявка в Telegram)
+async function submitTopup() {
+  const token = localStorage.getItem('nak_token');
+  if (!token) {
+    showToast('Сначала войдите в аккаунт!');
+    openModal('login');
+    return;
+  }
+
+  const amountInput = document.getElementById('topup-amount');
+  const amount = amountInput ? amountInput.value : null;
+
+  if (!amount || amount <= 0) {
+    showToast('Укажите корректную сумму');
+    return;
+  }
+
+  const data = await apiRequest('/api/topup/create', 'POST', { amount });
+
   if (data.success) {
-    showToast(`Баланс пополнен на ${formatMoney(amount)}`);
-    updateAuth();
+    showToast('Заявка отправлена! Ожидайте подтверждения.');
+    if (amountInput) amountInput.value = '';
   } else {
-    showToast(data.error || "Ошибка пополнения");
+    showToast(data.error || 'Ошибка при отправке заявки.');
   }
 }
 
@@ -286,7 +191,6 @@ async function updateAuth() {
       document.getElementById("dashOrdersCount").textContent = data.orders ? data.orders.length : 0;
     }
 
-    // Отрисовка таблицы заказов в ЛК
     const ordersArea = document.getElementById("ordersTableArea");
     if (ordersArea && data.orders) {
       if (data.orders.length === 0) {
@@ -365,7 +269,6 @@ function updateSummary() {
   document.getElementById("totalPrice").textContent = formatMoney(total);
 }
 
-// Оформление заказа
 async function placeOrder() {
   const linkInput = document.getElementById("linkInput");
   const link = linkInput ? linkInput.value.trim() : "";
@@ -425,7 +328,7 @@ window.openTab = openTab;
 window.login = login;
 window.register = register;
 window.logout = logout;
-window.addTestBalance = addTestBalance;
+window.submitTopup = submitTopup;
 window.selectService = selectService;
 window.placeOrder = placeOrder;
 
@@ -433,7 +336,6 @@ window.placeOrder = placeOrder;
    7. СОБЫТИЯ И ИНИЦИАЛИЗАЦИЯ
    ========================================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  // Категории
   document.querySelectorAll(".cat-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
@@ -447,7 +349,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Калькулятор
   const btnMinus = document.getElementById("qtyMinus");
   const btnPlus = document.getElementById("qtyPlus");
   const inputQty = document.getElementById("qtyInput");
@@ -475,7 +376,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // Запуск первичного отображения
   renderServices("followers");
   updateSummary();
   updateAuth();
